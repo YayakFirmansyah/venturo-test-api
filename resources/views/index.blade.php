@@ -27,7 +27,9 @@
                 Venturo - Laporan penjualan tahunan per menu
             </div>
             <div class="card-body">
-                <form action="{{ url('/') }}" method="get">
+                <form action="{{ route('index') }}" method="get">
+                    @csrf
+
                     <div class="row">
                         <div class="col-2">
                             <div class="form-group">
@@ -44,10 +46,10 @@
                             <button type="submit" class="btn btn-primary">
                                 Tampilkan
                             </button>
-                            <a href="{{ url('/menu') }}" target="_blank" rel="Array Menu" class="btn btn-secondary">
+                            <a href="{{ route('menu') }}" target="_blank" rel="Array Menu" class="btn btn-secondary">
                                 Json Menu
                             </a>
-                            <a href="{{ isset($tahun) ? url('/transaksi/' . $tahun) : '#' }}" target="_blank"
+                            <a href="{{ isset($tahun) ? route('transaksi', [$tahun]) : '#' }}" target="_blank"
                                 rel="Array Transaksi" class="btn btn-secondary">
                                 Json Transaksi
                             </a>
@@ -86,15 +88,27 @@
                             </thead>
                             <tbody>
                                 @foreach ($data as $key => $menu)
-                                    <tr>
-                                        <td class="table-secondary" colspan="14"><b>{{ ucfirst($key) }}</b></td>
+                                    <tr class="table-secondary">
+                                        <td><b>{{ ucfirst($key) }}</b></td>
+                                        @foreach ($subBulanTotal[$key] as $value)
+                                            <td style="text-align: right;">
+                                                <b>
+                                                    {{ $value }}
+                                                </b>
+                                            </td>
+                                        @endforeach
+                                        <td style="text-align: right;">
+                                            <b>
+                                                {{ $kategoriTotal[$key] }}
+                                            </b>
+                                        </td>
                                     </tr>
                                     @foreach ($menu as $namaMenu => $totalMenu)
                                         <tr>
                                             <td>{{ $namaMenu }}</td>
                                             @foreach ($totalMenu as $value)
                                                 <td style="text-align: right;">
-                                                    {{ $value != null ? number_format($value) : '' }}
+                                                    {{ $value }}
                                                 </td>
                                             @endforeach
                                             <td style="text-align: right;">
@@ -116,7 +130,7 @@
                                     @endforeach
                                     <td style="text-align: right;">
                                         <b>
-                                            {{ $totalBulanText }}
+                                            {{ $finalTotal }}
                                         </b>
                                     </td>
                                 </tr>

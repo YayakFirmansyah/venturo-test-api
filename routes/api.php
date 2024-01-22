@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\JsonController;
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/menu', [JsonController::class, 'getMenu'])->name('menu');
+Route::get('/transaksi/{tahun}', [JsonController::class, 'getAllTransaksi'])->name('transaksi');
